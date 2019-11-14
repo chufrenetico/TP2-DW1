@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+  <meta charset="UTF-8">
+  <title>Simulador de Investimentos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="minhacss/estilos.css">
+  
+  
+</head>
+
+<body>
+    <header class="header">
+        <h1 class="logo">Simulador de Investimentos</h1>
+    </header>
+    <script>
+        function calculo(){
+          var inv=document.getElementById("valor").value;
+          var tempo=document.getElementById("tempo").value;
+          if (tempo <= 6){
+            var ir=22.5;
+          } else if (tempo <= 12){
+            var ir=20;
+          } else if (tempo <= 24){
+            var ir=17.5;
+          } else {
+            var ir= 15;
+          }
+          var taxa=document.getElementById("taxa").value;
+          var pct=document.getElementById("pct").value;
+          var poup=inv*Math.pow(1.0035, tempo);
+          var arredondadop=parseFloat(poup.toFixed(2));
+          var cdb=inv*Math.pow((1+(taxa * pct /10000)), tempo);
+          var arredondadoc=parseFloat(cdb.toFixed(2));
+          var lucro=arredondadoc - inv;
+          var desconto=parseFloat(inv) + lucro - (ir * lucro /100);
+          var arredondadod=parseFloat(desconto.toFixed(2));
+          document.getElementById('pou').innerHTML ="Valor Final: R$"+arredondadop;
+          document.getElementById('cdb').innerHTML ="Valor Final Bruto: R$"+arredondadoc;
+          document.getElementById('des').innerHTML ="Valor Final Líquido: R$"+arredondadod;
+          document.getElementById('ali').innerHTML ="Alíquota: "+ir+"%";
+          document.getElementById('tabela').style.visibility='visible';
+          if (arredondadod>arredondadop){
+            document.getElementById('melhor').innerHTML="A melhor opção de investimento para você é o CDB.";
+          } else if (arredondadod==arredondadop){
+            document.getElementById('melhor').innerHTML="Os dois investimentos terão o mesmo retorno."
+          } else if (arredondadod<= arredondadop){
+            document.getElementById('melhor').innerHTML="A melhor opção de investimento para você é a poupança."
+          }
+        }  
+      </script>
+  <main>
+    <h2>Simule seu investimento conosco!</h2><br>
+    <p>Calculamos para você qual a melhor opção de investimento, dentre poupança ou CDB, de acordo com suas necessidades.</p>
+    <h4>Conta poupança: o que é e como funciona?</h4>
+    <p>A conta poupança é a caderneta. Ela é regulada pelo Banco Central e funciona assim: você faz um depósito e, um mês após essa data, o dinheiro vai crescer um pouco, levando em conta uma taxa definida pelo governo. Essa taxa é calculada de duas formas:</p>
+    <ul>
+      <li>Se a taxa Selic estiver acima de 8,5% ao ano, o rendimento da poupança será 0,5% ao mês + TR.</li>
+      <li>Caso a taxa Selic esteja menor ou igual a 8,5% ao ano, o rendimento da poupança será 70% da Selic + TR.</li>
+    </ul>
+    <p>Atualmente, o rendimento da poupança é de 4,2% ao ano.</p>
+    <h4>CDB: o que é e como funciona?</h4>
+    <p>O CDB (Certificado de Depósito Bancário) é um título emitido por bancos com o objetivo de captar dinheiro. Basicamente, o CDB funciona como um empréstimo do seu dinheiro para a instituição bancária. Em troca, você recebe uma taxa de rentabilidade que é definida no momento da compra.</p>
+    <h3>Calcular</h3>
+
+    <form onsubmit="return false" method="POST">
+    <label for="valor">Valor do Investimento(em R$): </label>
+    <input type="number" class="form-control-sm real" name="valor" id="valor" placeholder="Digite aqui" min="0" step=".01" required><br>
+    <label for="tempo">Tempo do Investimento (em meses): </label>
+    <input type="number" class="form-control-sm" name="tempo" id="tempo" placeholder="Digite aqui" min="0" required><br>
+    <label for="valor">Taxa CDI(mensal): </label>
+    <input type="number" class="form-control-sm" name="taxa" id="taxa" placeholder="Digite aqui" min="0" step=".01" required><br>
+    <label for="valor">Porcentagem da CDI(%): </label>
+    <input type="number" class="form-control-sm" name="pct" id="pct" placeholder="Digite aqui" min="0" step=".01" max="200" required><span>%</span>
+    <button type="submit" class="button1" onclick="calculo()">Calcular</button>
+    </form>
+    <div id="tabela">
+        <div class="row">
+            <div class="text-center font-weight-bold col-sm-6"><h2>Poupança</h2></div>
+            <div class="text-center font-weight-bold col-sm-6"><h2>CDB</h2></div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6" id="pou"></div>
+          <div class="col-sm-6" id="cdb"></div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6"></div>
+            <div class="col-sm-6" id="des"></div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6"></div>
+            <div class="col-sm-6" id="ali"></div>
+        </div>
+    </div>
+    <p id="melhor" class="text-center"> 
+    </p>
+  </main>
+</body>
+</html>
